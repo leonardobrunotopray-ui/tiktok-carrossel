@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex">
+<title>Autorização do TikTok</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><main>
+<h1 id="titulo">Autorização recebida</h1>
+<div class="box" id="ok">
+  <p><b>1.</b> Toque no botão para copiar o endereço desta página.</p>
+  <button type="button" id="copiar">Copiar</button>
+  <div class="url" id="url"></div>
+  <p><b>2.</b> Volte ao GitHub, abra <b>Actions → Autorizar TikTok → Run workflow</b> e cole no campo <b>url_retorno</b>.</p>
+  <p class="muted">O código vale poucos minutos e só funciona uma vez. Não compartilhe este endereço com ninguém.</p>
+</div>
+<div class="box" id="erro" hidden><p id="msg"></p></div>
+</main>
+<script>
+var p=new URLSearchParams(location.search), url=location.href;
+if(p.get('error')){
+  document.getElementById('titulo').textContent='A autorização não foi concluída';
+  document.getElementById('ok').hidden=true;document.getElementById('erro').hidden=false;
+  document.getElementById('msg').textContent='O TikTok respondeu: '+p.get('error')+' '+(p.get('error_description')||'')+'. Gere um novo link no workflow e tente de novo.';
+}else if(!p.get('code')){
+  document.getElementById('titulo').textContent='Página de retorno da autorização';
+  document.getElementById('ok').hidden=true;document.getElementById('erro').hidden=false;
+  document.getElementById('msg').textContent='Esta página só mostra algo depois que você autoriza no TikTok pelo link gerado no workflow "Autorizar TikTok".';
+}
+document.getElementById('url').textContent=url;
+document.getElementById('copiar').addEventListener('click',function(){
+  var b=this;
+  function feito(){b.textContent='Copiado! Agora cole no GitHub'}
+  function manual(){var r=document.createRange();r.selectNodeContents(document.getElementById('url'));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Texto selecionado: toque em Copiar'}
+  try{navigator.clipboard.writeText(url).then(feito,manual)}catch(e){manual()}
+});
+</script>
+</body></html>

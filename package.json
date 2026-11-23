@@ -1,0 +1,14 @@
+{
+  "name": "tiktok-carrossel",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Publica carrosséis de imagens no TikTok pela Content Posting API, via GitHub Actions",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "auth": "node bin/auth.js",
+    "info": "node bin/postar.js --info",
+    "gerar": "node bin/gerar.js",
+    "postar": "node bin/postar.js",
+    "proxima": "node bin/postar.js --proxima"
+  }
+}

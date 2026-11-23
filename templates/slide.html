@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600&display=block">
+<style>
+  /* Slide 1080x1920 (9:16). Texto fica nos 70% de cima: a parte de baixo e a direita ficam sob a legenda e os botões do TikTok. */
+  :root{--bg:#0f2038;--bg2:#16304f;--fg:#f4f1e8;--muted:#a9b6c8;--accent:#f2c14e;--accent-fg:#1a1405;--line:rgba(255,255,255,.14)}
+  body.claro{--bg:#eef2f7;--bg2:#ffffff;--fg:#10213a;--muted:#4f5f75;--accent:#0f7a5c;--accent-fg:#ffffff;--line:rgba(16,33,58,.14)}
+  body.verde{--bg:#0d2a22;--bg2:#123a2f;--fg:#effaf4;--muted:#9fc2b4;--accent:#7ee2b8;--accent-fg:#06281d;--line:rgba(255,255,255,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1920px;overflow:hidden}
+  body{background:radial-gradient(1200px 900px at 85% 0%,var(--bg2),var(--bg) 70%);color:var(--fg);font-family:Inter,"DejaVu Sans",sans-serif;position:relative}
+  .top{position:absolute;top:110px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:center;font:600 34px/1 Inter,"DejaVu Sans",sans-serif;color:var(--muted);letter-spacing:.02em}
+  .top .pg{font-variant-numeric:tabular-nums}
+  .area{position:absolute;top:250px;left:96px;right:150px;height:1050px;display:flex;flex-direction:column;justify-content:center;gap:44px}
+  h1{font-family:Archivo,"DejaVu Sans",sans-serif;font-weight:900;line-height:1.02;letter-spacing:-.02em;font-size:120px;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--accent)}
+  .sub{font-size:52px;line-height:1.3;color:var(--muted);font-weight:500}
+  .txt{font-size:54px;line-height:1.38;font-weight:500}
+  .txt b,.sub b{color:var(--accent);font-weight:600}
+  .num{width:150px;height:150px;border-radius:40px;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font:900 92px/1 Archivo,"DejaVu Sans",sans-serif}
+  .valor{font:900 260px/0.95 Archivo,"DejaVu Sans",sans-serif;color:var(--accent);letter-spacing:-.04em}
+  ul{list-style:none;display:flex;flex-direction:column;gap:30px}
+  li{display:flex;gap:30px;align-items:flex-start;font-size:52px;line-height:1.3;font-weight:500;padding-bottom:30px;border-bottom:2px solid var(--line)}
+  li:last-child{border-bottom:0}
+  li::before{content:"";flex:none;width:26px;height:26px;margin-top:20px;border-radius:50%;background:var(--accent)}
+  .seta{display:inline-flex;align-items:center;gap:20px;font:700 44px/1 Archivo,"DejaVu Sans",sans-serif;color:var(--accent-fg);background:var(--accent);padding:26px 40px;border-radius:999px;align-self:flex-start}
+  .aviso{position:absolute;left:96px;right:150px;top:1330px;font-size:30px;line-height:1.4;color:var(--muted)}
+  .barra{position:absolute;left:96px;top:205px;width:120px;height:10px;border-radius:5px;background:var(--accent)}
+</style>
+</head>
+<body>
+<div class="top"><span id="marca"></span><span class="pg" id="pg"></span></div>
+<div class="barra"></div>
+<div class="area" id="area"></div>
+<div class="aviso" id="aviso"></div>
+<script>
+  // Recebe window.SLIDE = { slide, indice, total, marca, tema, aviso }
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  // *texto* vira destaque na cor de acento
+  function fmt(s){return esc(s).replace(/\*(.+?)\*/g,'<b>$1</b>').replace(/\n/g,'<br>')}
+  function fmtTitle(s){return esc(s).replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>')}
+  function render(d){
+    var s=d.slide, t=s.tipo||'conteudo', a=document.getElementById('area'), h='';
+    document.body.className=d.tema||'';
+    document.getElementById('marca').textContent=d.marca||'';
+    document.getElementById('pg').textContent=(d.indice+1)+'/'+d.total;
+    if(t==='capa'){
+      h+='<h1>'+fmtTitle(s.titulo)+'</h1>';
+      if(s.subtitulo)h+='<p class="sub">'+fmt(s.subtitulo)+'</p>';
+      h+='<span class="seta">'+esc(s.chamada||'Arrasta pro lado')+' &rarr;</span>';
+    }else if(t==='destaque'){
+      if(s.titulo)h+='<p class="sub">'+fmt(s.titulo)+'</p>';
+      h+='<div class="valor">'+esc(s.valor)+'</div>';
+      if(s.texto)h+='<p class="txt">'+fmt(s.texto)+'</p>';
+    }else if(t==='lista'){
+      h+='<h1 class="m">'+fmtTitle(s.titulo)+'</h1><ul>'+(s.itens||[]).map(function(i){return '<li><span>'+fmt(i)+'</span></li>'}).join('')+'</ul>';
+    }else if(t==='final'){
+      h+='<h1>'+fmtTitle(s.titulo)+'</h1>';
+      if(s.texto)h+='<p class="sub">'+fmt(s.texto)+'</p>';
+      if(d.aviso)document.getElementById('aviso').textContent=d.aviso;
+    }else{
+      if(s.numero)h+='<div class="num">'+esc(s.numero)+'</div>';
+      h+='<h1 class="m">'+fmtTitle(s.titulo)+'</h1>';
+      if(s.texto)h+='<p class="txt">'+fmt(s.texto)+'</p>';
+    }
+    a.innerHTML=h;
+    // títulos internos menores que a capa
+    a.querySelectorAll('h1.m').forEach(function(e){e.style.fontSize='92px'});
+    // encolhe o texto até caber na área
+    var guard=0;
+    while(a.scrollHeight>a.clientHeight+2&&guard++<60){
+      a.querySelectorAll('h1,.txt,.sub,li,.valor').forEach(function(e){
+        var fs=parseFloat(getComputedStyle(e).fontSize);e.style.fontSize=(fs*0.95)+'px';
+      });
+    }
+  }
+</script>
+</body>
+</html>

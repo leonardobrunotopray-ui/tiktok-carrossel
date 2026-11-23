@@ -1,0 +1,95 @@
+name: Publicar no TikTok
+
+on:
+  workflow_dispatch:
+    inputs:
+      pasta:
+        description: 'Pasta do post em posts/ (deixe vazio para publicar o próximo da fila)'
+        required: false
+        default: ''
+      teste:
+        description: 'Só testar, sem publicar'
+        type: boolean
+        default: false
+  # Para publicar automaticamente, apague o "#" das duas linhas abaixo.
+  # O horário é em UTC: 21:00 UTC = 18:00 em Brasília. "1,3,5" = segunda, quarta e sexta.
+  # schedule:
+  #   - cron: '0 21 * * 1,3,5'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: tiktok
+  cancel-in-progress: false
+
+jobs:
+  preparar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Gerar imagens a partir do texto (se precisar)
+        run: |
+          if node bin/gerar.js --verificar; then
+            npm install --no-save playwright@1.49.1
+            npx playwright install --with-deps chromium
+            node bin/gerar.js
+          fi
+      - name: Salvar imagens geradas no repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
+          git add posts
+          git diff --cached --quiet || (git commit -m "Gera imagens dos carrosséis" && git push)
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  site:
+    needs: preparar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
+
+  publicar:
+    needs: site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Publicar carrossel
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_TOKEN_KEY: ${{ secrets.TIKTOK_TOKEN_KEY }}
+          PASTA: ${{ inputs.pasta }}
+          TESTE: ${{ inputs.teste }}
+        run: |
+          FLAG=""
+          [ "$TESTE" = "true" ] && FLAG="--dry-run"
+          if [ -n "$PASTA" ]; then
+            node bin/postar.js "$PASTA" $FLAG
+          else
+            node bin/postar.js --proxima $FLAG
+          fi
+      - name: Salvar status e token renovado
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
+          git add posts tokens.enc 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Atualiza status da publicação" && git pull --rebase && git push)

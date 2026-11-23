@@ -1,0 +1,23 @@
+{
+  "title": "Reserva de emergência em 5 passos",
+  "description": "Quanto guardar, onde deixar e como começar com pouco. Salva pra consultar depois! #financaspessoais #reservadeemergencia #educacaofinanceira #dinheiro",
+  "marca": "@seucanal",
+  "tema": "",
+  "aviso": "Conteúdo educativo. Não é recomendação de investimento.",
+  "slides": [
+    { "tipo": "capa", "titulo": "Reserva de emergência em *5 passos*", "subtitulo": "Quanto guardar, onde deixar e como começar com pouco" },
+    { "tipo": "conteudo", "numero": "1", "titulo": "Descubra seu custo mensal", "texto": "Some aluguel, contas, mercado, transporte e saúde. Esse é o seu *custo de vida*." },
+    { "tipo": "destaque", "titulo": "Meta da reserva", "valor": "6×", "texto": "o seu custo mensal. Se sua renda é instável, mire em *12 meses*." },
+    { "tipo": "lista", "titulo": "Onde deixar o dinheiro", "itens": ["Tesouro Selic", "CDB com liquidez diária, rendendo *100% do CDI* ou mais", "Conta remunerada de banco sólido"] },
+    { "tipo": "conteudo", "numero": "4", "titulo": "Comece pequeno", "texto": "Guardar *R$ 50 por semana* já dá R$ 2.600 em um ano. O importante é o hábito." },
+    { "tipo": "conteudo", "numero": "5", "titulo": "Só use em emergência", "texto": "Perdeu o emprego, problema de saúde, conserto urgente. *Promoção não é emergência.*" },
+    { "tipo": "final", "titulo": "Salva pra não *esquecer*", "texto": "Segue o perfil pra mais dicas de finanças sem complicação." }
+  ],
+  "cover_index": 0,
+  "mode": "direct",
+  "privacy": "PUBLIC_TO_EVERYONE",
+  "auto_add_music": true,
+  "disable_comment": false,
+  "brand_content": false,
+  "brand_organic": false
+}
