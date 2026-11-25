@@ -144,18 +144,29 @@ async function main() {
     console.log(`  Conta: @${info.creator_username} | privacidade: ${privacyLevel}`);
   }
 
-  const { publish_id } = await tiktok.postCarousel({
+  const send = (privacy) => tiktok.postCarousel({
     title: post.title || '',
     description: post.description || '',
     imageUrls: urls,
     coverIndex: post.cover_index ?? 0,
-    privacyLevel,
+    privacyLevel: privacy,
     disableComment: !!post.disable_comment,
     autoAddMusic: post.auto_add_music !== false,
     brandContent: !!post.brand_content,
     brandOrganic: !!post.brand_organic,
     mode,
   });
+  let publish_id;
+  try {
+    ({ publish_id } = await send(privacyLevel));
+  } catch (e) {
+    // App ainda não aprovado (Sandbox/sem auditoria): o TikTok só aceita posts privados.
+    if (mode === 'direct' && privacyLevel !== 'SELF_ONLY' && /unaudited|private/i.test(e.message)) {
+      console.log('  O TikTok só aceita posts privados enquanto o app não for aprovado. Enviando como SELF_ONLY.');
+      privacyLevel = 'SELF_ONLY';
+      ({ publish_id } = await send(privacyLevel));
+    } else throw e;
+  }
   console.log(`  Enviado. publish_id=${publish_id}`);
 
   const result = await waitForResult(publish_id);
