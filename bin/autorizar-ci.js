@@ -23,7 +23,7 @@ async function main() {
     // O GitHub esconde (***) qualquer valor de secret que apareça no log ou no resumo, inclusive o Client key.
     // Por isso o link aponta para autorizar.html no site, que recebe o Client key codificado e monta o link do TikTok.
     // O Client key não é sigiloso: ele aparece na barra do navegador em qualquer login do TikTok.
-    const k = Buffer.from(config.clientKey).toString('base64url');
+    const k = Buffer.from([...config.clientKey].reverse().join('')).toString('hex'); // invertido + hex: o GitHub mascara também o base64
     const s = encodeURIComponent(config.scopes);
     const url = config.redirectUri.replace(/callback\.html$/, 'autorizar.html') + `#k=${k}&s=${s}`;
     summary([

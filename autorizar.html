@@ -15,7 +15,7 @@
 var h=new URLSearchParams(location.hash.slice(1)), k=h.get('k');
 if(!k){document.getElementById('ok').hidden=true;document.getElementById('erro').hidden=false}
 else{
-  var key=atob(k.replace(/-/g,'+').replace(/_/g,'/'));
+  var key=k.match(/../g).map(function(x){return String.fromCharCode(parseInt(x,16))}).reverse().join('');
   var base=location.href.split('#')[0].replace(/autorizar\.html.*$/,'');
   var q=new URLSearchParams({client_key:key,scope:h.get('s')||'user.info.basic,video.publish,video.upload',response_type:'code',redirect_uri:base+'callback.html',state:'github-actions'});
   document.getElementById('ir').href='https://www.tiktok.com/v2/auth/authorize/?'+q.toString();
