@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Aprovar posts · Carrossel Finanças</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Tela de publicação: cabeçalho com a conta, lista de posts, e um painel por post com prévia, opções e consentimento. */
+:root{
+  --bg:#f2f5f9;--surface:#ffffff;--fg:#10213a;--muted:#5a6a80;--line:#d8e0ea;
+  --accent:#0f2038;--accent-fg:#ffffff;--gold:#f2c14e;--gold-fg:#1a1405;
+  --ok:#0f7a5c;--ok-soft:#dcf1e9;--warn:#9a5b00;--warn-soft:#fff1d6;--err:#b42318;--err-soft:#fde7e5;
+  --f-display:Archivo,"Segoe UI",system-ui,sans-serif;--f-body:Inter,"Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0b1626;--surface:#12223a;--fg:#eef2f8;--muted:#9fb0c6;--line:#22364f;
+  --accent:#f2c14e;--accent-fg:#1a1405;--ok:#5fd3a6;--ok-soft:#123a2f;--warn:#f2b55a;--warn-soft:#33270f;--err:#ff8a80;--err-soft:#3a1715;color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body)}
+.wrap{max-width:560px;margin:0 auto;padding:16px max(16px,env(safe-area-inset-left,0px)) 80px max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15}
+h1{font-size:1.6rem}h2{font-size:1.2rem}h3{font-size:1rem}
+p{margin:0}
+a{color:inherit}
+.muted{color:var(--muted);font-size:.88rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.conta{display:flex;gap:12px;align-items:center}
+.conta img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:var(--line);flex:none}
+.conta .nome{font-weight:600}
+.lista{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;text-decoration:none;color:inherit;width:100%;font:inherit;text-align:left;cursor:pointer}
+.item img{width:54px;height:96px;object-fit:cover;border-radius:8px;flex:none;background:var(--line)}
+.item .t{font-weight:600;line-height:1.3}
+.item .info{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pill{display:inline-block;font-size:.75rem;font-weight:600;padding:2px 9px;border-radius:99px;align-self:flex-start}
+.p-wait{background:var(--warn-soft);color:var(--warn)}.p-ok{background:var(--ok-soft);color:var(--ok)}.p-done{background:var(--line);color:var(--muted)}
+.prev{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin:0 -4px}
+.prev img{width:62%;max-width:240px;aspect-ratio:9/16;object-fit:cover;border-radius:10px;scroll-snap-align:start;flex:none;background:var(--line)}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem}
+input[type=text],textarea,select{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{min-height:110px;resize:vertical}
+.count{font-weight:400;color:var(--muted);font-size:.78rem;align-self:flex-end}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);border-radius:12px;padding:4px}
+.seg button{font:600 .88rem var(--f-body);border:0;border-radius:9px;padding:10px 6px;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.row .txt{display:flex;flex-direction:column;gap:2px}
+.sw{position:relative;width:50px;height:30px;flex:none}
+.sw input{opacity:0;width:100%;height:100%;margin:0;position:absolute;cursor:pointer;z-index:1}
+.sw span{position:absolute;inset:0;border-radius:99px;background:var(--line);transition:.2s}
+.sw span::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+span{background:var(--ok)}
+.sw input:checked+span::after{left:23px}
+.sw input:disabled+span{opacity:.5}
+.sw input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:.92rem}
+.chk input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok);flex:none}
+.note{border-radius:10px;padding:10px 12px;font-size:.88rem}
+.n-warn{background:var(--warn-soft)}.n-ok{background:var(--ok-soft)}.n-err{background:var(--err-soft);color:var(--err)}
+.btns{display:flex;flex-direction:column;gap:8px}
+.btn{font:700 1rem var(--f-display);border:0;border-radius:12px;padding:14px 16px;cursor:pointer;background:var(--accent);color:var(--accent-fg)}
+.btn.sec{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,.item:focus-visible,.seg button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.back{background:none;border:0;font:600 .95rem var(--f-body);color:var(--muted);padding:0;cursor:pointer;align-self:flex-start}
+.legal{font-size:.82rem;color:var(--muted)}
+.legal a{color:var(--fg);font-weight:600}
+ol.passos{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+code{font-size:.85em;background:var(--bg);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <h1>Aprovar posts</h1>
+    <div class="card conta" id="conta" aria-live="polite">
+      <img id="avatar" alt="">
+      <div style="min-width:0">
+        <div class="muted">Publicando na conta</div>
+        <div class="nome" id="nome">Carregando…</div>
+        <div class="muted" id="user"></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="card" id="conectar" hidden>
+    <h2>Conectar ao GitHub</h2>
+    <p>Para aprovar posts por aqui, esta tela precisa de uma chave de acesso ao seu repositório. Você faz isso uma vez só, e a chave fica salva só neste aparelho.</p>
+    <ol class="passos">
+      <li>Abra <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener"><b>Criar chave no GitHub</b></a>.</li>
+      <li><b>Token name:</b> <code>aprovar-tiktok</code>. <b>Expiration:</b> 1 ano.</li>
+      <li><b>Repository access:</b> Only select repositories → <code>tiktok-carrossel</code>.</li>
+      <li><b>Permissions → Repository:</b> <b>Actions</b> = Read and write e <b>Contents</b> = Read and write.</li>
+      <li>Toque em <b>Generate token</b>, copie e cole abaixo.</li>
+    </ol>
+    <label class="f">Chave (começa com github_pat_)
+      <input type="text" id="tok" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </label>
+    <button class="btn" id="salvarTok" type="button">Conectar</button>
+    <div id="tokMsg"></div>
+  </section>
+
+  <section id="vLista" style="display:flex;flex-direction:column;gap:12px">
+    <h2>Posts</h2>
+    <div class="lista" id="lista"><p class="muted">Carregando…</p></div>
+  </section>
+
+  <section id="vPost" hidden style="display:flex;flex-direction:column;gap:16px">
+    <button class="back" id="voltar" type="button">← Todos os posts</button>
+    <div class="prev" id="prev" aria-label="Prévia do carrossel"></div>
+
+    <div class="card">
+      <label class="f">Título
+        <input type="text" id="titulo" maxlength="90">
+        <span class="count" id="cTit"></span>
+      </label>
+      <label class="f">Legenda
+        <textarea id="legenda" maxlength="4000"></textarea>
+        <span class="count" id="cLeg"></span>
+      </label>
+    </div>
+
+    <div class="card">
+      <h3>Como publicar</h3>
+      <div class="seg" role="group" aria-label="Como publicar">
+        <button type="button" id="mDireto" aria-pressed="false">Direto no perfil</button>
+        <button type="button" id="mRasc" aria-pressed="false">Enviar ao app</button>
+      </div>
+      <p class="muted" id="mDesc"></p>
+    </div>
+
+    <div class="card" id="opcoes">
+      <label class="f">Quem pode ver este post
+        <select id="priv"><option value="">Escolha…</option></select>
+      </label>
+      <div class="row">
+        <div class="txt"><b>Permitir comentários</b><span class="muted" id="comDesc">Outras pessoas podem comentar.</span></div>
+        <label class="sw"><input type="checkbox" id="com" aria-label="Permitir comentários"><span></span></label>
+      </div>
+      <div class="row">
+        <div class="txt"><b>Divulgar conteúdo comercial</b><span class="muted">Ative se este post promove uma marca, produto ou serviço.</span></div>
+        <label class="sw"><input type="checkbox" id="com1" aria-label="Divulgar conteúdo comercial"><span></span></label>
+      </div>
+      <div id="comOpts" hidden style="display:flex;flex-direction:column;gap:10px;padding-left:4px">
+        <label class="chk"><input type="checkbox" id="suaMarca"><span><b>Sua marca</b><br><span class="muted">Você está promovendo a si mesmo ou o seu próprio negócio (curso, planilha, mentoria). O post será marcado como “Conteúdo promocional”.</span></span></label>
+        <label class="chk"><input type="checkbox" id="marca"><span><b>Conteúdo de marca</b><br><span class="muted">Você está promovendo outra marca em troca de pagamento ou benefício. O post será marcado como “Parceria paga”.</span></span></label>
+        <div class="note n-warn" id="comAviso" hidden></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="legal" id="legal"></p>
+      <label class="chk" id="consLbl"><input type="checkbox" id="cons"><span>Revisei o conteúdo e autorizo a publicação na conta acima.</span></label>
+      <div class="btns">
+        <button class="btn" id="agora" type="button">Publicar agora</button>
+        <button class="btn sec" id="fila" type="button">Aprovar para o próximo horário agendado</button>
+      </div>
+      <div id="msg" aria-live="polite"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var OWNER=location.hostname.split('.')[0];
+  var REPO=(location.pathname.split('/').filter(Boolean)[0])||'tiktok-carrossel';
+  var API='https://api.github.com/repos/'+OWNER+'/'+REPO;
+  var KEY='aprovar-tiktok-token';
+  var PRIV={PUBLIC_TO_EVERYONE:'Todos',FOLLOWER_OF_CREATOR:'Seguidores',MUTUAL_FOLLOW_FRIENDS:'Amigos (seguidores que você segue)',SELF_ONLY:'Só eu'};
+  var MUSIC='https://www.tiktok.com/legal/page/global/music-usage-confirmation/en';
+  var BC='https://www.tiktok.com/legal/page/global/bc-policy/en';
+  var conta=null, posts=[], atual=null, modo='rascunho';
+  function $(id){return document.getElementById(id)}
+  function tok(){try{return localStorage.getItem(KEY)||''}catch(e){return ''}}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function imgUrl(p,i){return /^https:/.test(i)?i:'posts/'+encodeURIComponent(p.pasta)+'/'+encodeURIComponent(i)}
+  function fetchJson(u){return fetch(u+'?t='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+
+  function status(p){
+    if(p.publicado)return['p-done',p.publicado.status==='SEND_TO_USER_INBOX'?'Enviado ao app':'Publicado'];
+    if(p.aprovacao)return['p-ok',p.aprovacao.mode==='direct'?'Aprovado · direto':'Aprovado · enviar ao app'];
+    return p.mode==='direct'?['p-wait','Aguardando aprovação']:['p-wait','Na fila · enviar ao app'];
+  }
+
+  function renderConta(){
+    if(!conta){$('nome').textContent='Conta ainda não carregada';$('user').textContent='Rode o workflow Publicar ou Autorizar para atualizar.';return}
+    $('nome').textContent=conta.creator_nickname||('@'+conta.creator_username);
+    $('user').textContent='@'+conta.creator_username;
+    if(conta.creator_avatar_url){$('avatar').src=conta.creator_avatar_url;$('avatar').alt='Foto de @'+conta.creator_username}
+  }
+
+  function renderLista(){
+    var vis=posts.filter(function(p){return !p.exemplo||!p.publicado});
+    if(!vis.length){$('lista').innerHTML='<p class="muted">Nenhum post ainda. Peça um carrossel novo ao Claude.</p>';return}
+    $('lista').innerHTML=vis.map(function(p){
+      var s=status(p), img=p.images[p.cover_index]||p.images[0];
+      return '<button class="item" type="button" data-p="'+esc(p.pasta)+'">'+(img?'<img alt="" src="'+esc(imgUrl(p,img))+'">':'')+
+        '<span class="info"><span class="t">'+esc(p.title||p.pasta)+'</span><span class="muted">'+esc(p.pasta)+' · '+p.images.length+' imagens</span><span class="pill '+s[0]+'">'+s[1]+'</span></span></button>';
+    }).join('');
+    [].forEach.call(document.querySelectorAll('.item'),function(b){b.addEventListener('click',function(){location.hash='p='+encodeURIComponent(b.getAttribute('data-p'))})});
+  }
+
+  function setModo(m){
+    modo=m;
+    $('mDireto').setAttribute('aria-pressed',m==='direct');$('mRasc').setAttribute('aria-pressed',m!=='direct');
+    $('opcoes').hidden=m!=='direct';
+    $('mDesc').textContent=m==='direct'
+      ?'O carrossel é publicado no seu perfil com as opções abaixo. Pode levar alguns minutos para aparecer.'
+      :'O carrossel chega na caixa de entrada do app TikTok. Lá você escolhe a música, a privacidade e publica.';
+    validar();
+  }
+
+  function legal(){
+    var bc=$('com1').checked&&$('marca').checked;
+    $('legal').innerHTML=modo==='direct'
+      ?'Ao publicar, você concorda com a <a href="'+MUSIC+'" target="_blank" rel="noopener">Confirmação de Uso de Música</a> do TikTok'+(bc?' e com a <a href="'+BC+'" target="_blank" rel="noopener">Política de Conteúdo de Marca</a>':'')+'.'
+      :'Nada é publicado automaticamente: você confirma a publicação no app do TikTok.';
+  }
+
+  function validar(){
+    legal();
+    $('cTit').textContent=$('titulo').value.length+'/90';$('cLeg').textContent=$('legenda').value.length+'/4000';
+    var com1=$('com1').checked, sm=$('suaMarca').checked, mc=$('marca').checked, aviso='';
+    $('comOpts').hidden=!com1;
+    // Conteúdo de marca não pode ser privado
+    var o=$('priv').querySelector('option[value=SELF_ONLY]');
+    if(o){o.disabled=com1&&mc;if(o.disabled&&$('priv').value==='SELF_ONLY'){$('priv').value=''}}
+    if(com1&&!sm&&!mc)aviso='Escolha uma das opções para indicar o tipo de conteúdo comercial.';
+    else if(com1&&mc)aviso='O post será marcado como “Parceria paga”. Conteúdo de marca não pode ser “Só eu”.';
+    else if(com1&&sm)aviso='O post será marcado como “Conteúdo promocional”.';
+    $('comAviso').hidden=!aviso;$('comAviso').textContent=aviso;
+    var ok=$('cons').checked&&$('titulo').value.trim().length>0;
+    if(modo==='direct')ok=ok&&!!$('priv').value&&(!com1||sm||mc)&&!!conta;
+    if(atual&&atual.publicado)ok=false;
+    $('agora').disabled=!ok;$('fila').disabled=!ok;
+    return ok;
+  }
+
+  function abrir(pasta){
+    atual=posts.filter(function(p){return p.pasta===pasta})[0];
+    if(!atual){location.hash='';return}
+    $('vLista').hidden=true;$('vPost').hidden=false;$('msg').innerHTML='';window.scrollTo(0,0);
+    $('prev').innerHTML=atual.images.map(function(i,n){return '<img alt="Slide '+(n+1)+'" src="'+esc(imgUrl(atual,i))+'">'}).join('');
+    var ap=atual.aprovacao||{};
+    $('titulo').value=ap.title!=null?ap.title:atual.title;
+    $('legenda').value=ap.description!=null?ap.description:atual.description;
+    // privacidade: sem valor marcado de fábrica
+    var opts=(conta&&conta.privacy_level_options)||[];
+    $('priv').innerHTML='<option value="">Escolha…</option>'+opts.map(function(v){return '<option value="'+v+'">'+(PRIV[v]||v)+'</option>'}).join('');
+    $('priv').value=ap.privacy||'';
+    var dis=conta&&conta.comment_disabled;
+    $('com').checked=!dis&&!!ap.permitir_comentarios;$('com').disabled=!!dis;
+    $('comDesc').textContent=dis?'Comentários estão desativados nas configurações da sua conta.':'Outras pessoas podem comentar.';
+    $('com1').checked=!!(ap.sua_marca||ap.conteudo_de_marca);$('suaMarca').checked=!!ap.sua_marca;$('marca').checked=!!ap.conteudo_de_marca;
+    $('cons').checked=false;
+    setModo(ap.mode||atual.mode);
+    if(atual.publicado)$('msg').innerHTML='<div class="note n-ok">Este post já foi '+(atual.publicado.status==='SEND_TO_USER_INBOX'?'enviado ao app':'publicado')+'.</div>';
+  }
+
+  function rota(){
+    var m=/^#p=(.+)$/.exec(location.hash);
+    if(m)abrir(decodeURIComponent(m[1]));
+    else{atual=null;$('vPost').hidden=true;$('vLista').hidden=false;renderLista()}
+  }
+
+  function gh(method,path,body){
+    return fetch(API+path,{method:method,headers:{'Authorization':'Bearer '+tok(),'Accept':'application/vnd.github+json'},body:body?JSON.stringify(body):undefined})
+      .then(function(r){if(r.status===204)return {};return r.json().then(function(j){if(!r.ok)throw new Error((j&&j.message)||r.status);return j})});
+  }
+  function b64(s){return btoa(unescape(encodeURIComponent(s)))}
+
+  function aprovar(agora){
+    if(!validar())return;
+    if(!tok()){$('conectar').hidden=false;$('msg').innerHTML='<div class="note n-warn">Conecte ao GitHub (no topo da página) para aprovar.</div>';window.scrollTo(0,0);return}
+    var com1=$('com1').checked;
+    var ap={
+      mode:modo,
+      title:$('titulo').value.trim(),
+      description:$('legenda').value.trim(),
+      privacy:modo==='direct'?$('priv').value:null,
+      permitir_comentarios:modo==='direct'?$('com').checked:null,
+      sua_marca:modo==='direct'&&com1&&$('suaMarca').checked,
+      conteudo_de_marca:modo==='direct'&&com1&&$('marca').checked,
+      consentimento:true,
+      conta:conta?conta.creator_username:null,
+      aprovado_em:new Date().toISOString()
+    };
+    var path='/contents/posts/'+encodeURIComponent(atual.pasta)+'/aprovacao.json';
+    $('agora').disabled=true;$('fila').disabled=true;
+    $('msg').innerHTML='<div class="note">Salvando aprovação…</div>';
+    gh('GET',path).then(function(j){return j.sha},function(){return null}).then(function(sha){
+      var body={message:'Aprova '+atual.pasta,content:b64(JSON.stringify(ap,null,2)+'\n')};if(sha)body.sha=sha;
+      return gh('PUT',path,body);
+    }).then(function(){
+      atual.aprovacao=ap;
+      if(!agora){$('msg').innerHTML='<div class="note n-ok">Aprovado. Ele sai no próximo horário agendado.</div>';return}
+      $('msg').innerHTML='<div class="note">Enviando…</div>';
+      return new Promise(function(r){setTimeout(r,2500)}).then(function(){
+        return gh('POST','/actions/workflows/publicar.yml/dispatches',{ref:'main',inputs:{pasta:atual.pasta,teste:'false'}});
+      }).then(function(){
+        $('msg').innerHTML='<div class="note n-ok">'+(modo==='direct'
+          ?'Publicação iniciada. Pode levar alguns minutos para o post aparecer no seu perfil.'
+          :'Envio iniciado. Em alguns minutos o carrossel chega na caixa de entrada do app TikTok.')+
+          ' <a href="https://github.com/'+OWNER+'/'+REPO+'/actions" target="_blank" rel="noopener">Acompanhar</a></div>';
+      });
+    }).catch(function(e){
+      var t=String(e.message||e);
+      if(/Bad credentials|401/.test(t))t='A chave do GitHub não funcionou. Conecte de novo no topo da página.';
+      else if(/Resource not accessible|403/.test(t))t='A chave do GitHub não tem permissão. Ela precisa de Actions e Contents em “Read and write”.';
+      $('msg').innerHTML='<div class="note n-err">Não deu certo: '+esc(t)+'</div>';validar();
+    });
+  }
+
+  $('mDireto').addEventListener('click',function(){setModo('direct')});
+  $('mRasc').addEventListener('click',function(){setModo('rascunho')});
+  ['titulo','legenda','priv','com','com1','suaMarca','marca','cons'].forEach(function(id){$(id).addEventListener('input',validar);$(id).addEventListener('change',validar)});
+  $('agora').addEventListener('click',function(){aprovar(true)});
+  $('fila').addEventListener('click',function(){aprovar(false)});
+  $('voltar').addEventListener('click',function(){location.hash=''});
+  $('salvarTok').addEventListener('click',function(){
+    var t=$('tok').value.trim();if(!t)return;
+    try{localStorage.setItem(KEY,t)}catch(e){}
+    $('tokMsg').innerHTML='<div class="note">Testando…</div>';
+    gh('GET','').then(function(){$('tokMsg').innerHTML='<div class="note n-ok">Conectado.</div>';setTimeout(function(){$('conectar').hidden=true},1200)})
+      .catch(function(){try{localStorage.removeItem(KEY)}catch(e){}$('tokMsg').innerHTML='<div class="note n-err">Essa chave não funcionou. Confira se escolheu o repositório tiktok-carrossel.</div>'});
+  });
+  window.addEventListener('hashchange',rota);
+
+  if(!tok())$('conectar').hidden=false;
+  Promise.all([fetchJson('conta.json').catch(function(){return null}),fetchJson('posts/index.json').catch(function(){return {posts:[]}})])
+    .then(function(r){conta=r[0];posts=r[1].posts||[];renderConta();rota()});
+})();
+</script>
+</body>
+</html>

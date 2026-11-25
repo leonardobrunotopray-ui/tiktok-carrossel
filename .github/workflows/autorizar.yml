@@ -42,5 +42,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
-          git add tokens.enc
+          for f in posts tokens.enc conta.json; do if [ -e "$f" ]; then git add -A -- "$f"; fi; done
           git diff --cached --quiet || (git commit -m "Atualiza autorização do TikTok" && git push)

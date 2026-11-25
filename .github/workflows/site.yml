@@ -20,6 +20,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Gerar imagens de posts novos (se precisar)
+        run: |
+          if node bin/gerar.js --verificar; then
+            npm install --no-save playwright@1.49.1
+            npx playwright install --with-deps chromium
+            node bin/gerar.js
+          fi
+      - name: Atualizar lista de posts
+        run: node bin/indice.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
