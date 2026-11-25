@@ -54,8 +54,21 @@ function listPostDirs() {
 }
 
 // Próximo da fila: não publicado e pronto (rascunho, ou direto já aprovado).
+// Data no horário de Brasília (AAAA-MM-DD).
+function diaBrasil(d) { return new Date(d).toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' }); }
+
 function pickFolder() {
   if (args.includes('--proxima')) {
+    // Envio agendado: no máximo 1 post por dia. Se já saiu um hoje (por exemplo, enviado à mão
+    // porque o agendamento do GitHub atrasou), não manda o de amanhã antes da hora.
+    if (process.env.EVENTO === 'schedule') {
+      const hoje = diaBrasil(Date.now());
+      const jaSaiu = listPostDirs().some((d) => {
+        const pub = readJson(path.join(config.POSTS_DIR, d, 'publicado.json'));
+        return pub && pub.em && diaBrasil(pub.em) === hoje;
+      });
+      if (jaSaiu) { console.log('Já saiu um post hoje. O próximo vai amanhã.'); summary('Já saiu um post hoje. O próximo vai amanhã.'); process.exit(0); }
+    }
     for (const d of listPostDirs()) {
       const p = loadPost(d);
       if (p.publicado) continue;
