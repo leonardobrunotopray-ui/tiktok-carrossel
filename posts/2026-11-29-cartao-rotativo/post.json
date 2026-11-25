@@ -1,0 +1,18 @@
+{
+  "title": "Paguei o mínimo da fatura. O que acontece?",
+  "description": "Pagar o mínimo parece alívio, mas vira bola de neve. Segue pra não perder a parte 2: como negociar sua dívida 🔔 Manda pra quem vive pagando o mínimo. #cartaodecredito #dividas #financaspessoais #educacaofinanceira #dinheiro",
+  "marca": "@grana.descomplicadaa",
+  "tema": "",
+  "aviso": "Conteúdo educativo. Regras do rotativo: Lei 14.690/2023 e normas do Banco Central. Confirme as condições com seu banco.",
+  "slides": [
+    { "tipo": "capa", "titulo": "Paguei o *mínimo* da fatura. Minha dívida *pode dobrar*.", "subtitulo": "Por que essa saída vira uma bola de neve" },
+    { "tipo": "conteudo", "numero": "1", "titulo": "O que é o rotativo", "texto": "Quando você paga só o mínimo, *o resto da fatura vira dívida* com alguns dos juros mais altos do mercado." },
+    { "tipo": "conteudo", "numero": "2", "titulo": "E depois de um mês?", "texto": "O banco não pode te deixar no rotativo por mais de 30 dias. A dívida *vira parcelamento*, que também tem juros." },
+    { "tipo": "destaque", "titulo": "O que mudou na lei", "valor": "Até 2×", "texto": "Desde 2024, juros e encargos do rotativo não podem passar de *100% da dívida*. R$ 1.000 pode chegar a R$ 2.000." },
+    { "tipo": "lista", "titulo": "3 passos para sair", "itens": ["*Pare de usar* o cartão até quitar", "Troque a dívida cara por *uma mais barata*", "Depois, pague sempre *a fatura inteira*"] },
+    { "tipo": "final", "titulo": "Parte 2: como *negociar* sua dívida", "texto": "Segue pra não perder e manda pra quem vive pagando o mínimo." }
+  ],
+  "cover_index": 0,
+  "mode": "rascunho",
+  "auto_add_music": true
+}

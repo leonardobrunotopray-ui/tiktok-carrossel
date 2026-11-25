@@ -1,0 +1,19 @@
+{
+  "title": "5 gastos invisíveis que estão comendo seu salário",
+  "description": "Qual desses te pegou? Comenta aqui 👇 Salva pra revisar seu extrato no fim do mês e segue pra mais dicas de dinheiro sem complicação. #financaspessoais #educacaofinanceira #dinheiro #organizacaofinanceira #economizar",
+  "marca": "@grana.descomplicadaa",
+  "tema": "",
+  "aviso": "Conteúdo educativo. Não é recomendação financeira.",
+  "slides": [
+    { "tipo": "capa", "titulo": "Você não é ruim com dinheiro. São esses *5 gastos*.", "subtitulo": "Eles somem do seu salário sem você perceber" },
+    { "tipo": "conteudo", "numero": "1", "titulo": "Assinaturas esquecidas", "texto": "Streaming, app, academia que você não usa. Abra a fatura e cancele *tudo que não usou no último mês*." },
+    { "tipo": "conteudo", "numero": "2", "titulo": "Tarifas do banco", "texto": "Pacote de serviços, anuidade, taxa de manutenção. Muitos bancos oferecem *conta sem tarifa*. Vale trocar." },
+    { "tipo": "conteudo", "numero": "3", "titulo": "Delivery “só hoje”", "texto": "Uma taxa de entrega aqui, outra ali. *R$ 15 três vezes por semana* passa de R$ 180 por mês." },
+    { "tipo": "conteudo", "numero": "4", "titulo": "Parcelas que se acumulam", "texto": "Cada parcela parece pequena. Juntas, elas *travam o seu salário* por meses. Some todas antes de parcelar de novo." },
+    { "tipo": "conteudo", "numero": "5", "titulo": "Compra por impulso", "texto": "Viu, quis, comprou. Use a *regra das 24 horas*: se ainda quiser amanhã, aí você decide." },
+    { "tipo": "final", "titulo": "Qual desses *te pegou*?", "texto": "Comenta o número aqui embaixo e salva pra revisar seu extrato no fim do mês." }
+  ],
+  "cover_index": 0,
+  "mode": "rascunho",
+  "auto_add_music": true
+}

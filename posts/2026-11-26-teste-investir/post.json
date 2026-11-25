@@ -1,0 +1,20 @@
+{
+  "title": "Teste: você está pronto para investir?",
+  "description": "Responde SIM ou NÃO em cada pergunta e comenta quantos SIM você teve 👇 Manda pra aquele amigo que quer começar a investir. #investimentos #educacaofinanceira #financaspessoais #comecarainvestir #dinheiro",
+  "marca": "@grana.descomplicadaa",
+  "tema": "",
+  "aviso": "Conteúdo educativo. Não é recomendação de investimento.",
+  "slides": [
+    { "tipo": "capa", "titulo": "Você está pronto para *investir*?", "subtitulo": "Responda SIM ou NÃO nas 5 perguntas. No final, veja seu resultado.", "chamada": "Começar o teste" },
+    { "tipo": "conteudo", "numero": "1", "titulo": "Você tem uma reserva de emergência?", "texto": "Dinheiro guardado para *pelo menos 3 meses* de gastos, que você pode sacar a qualquer momento." },
+    { "tipo": "conteudo", "numero": "2", "titulo": "Você está livre de dívidas caras?", "texto": "Rotativo do cartão, cheque especial, empréstimo com juros altos. *Pagar essas dívidas rende mais* que qualquer investimento." },
+    { "tipo": "conteudo", "numero": "3", "titulo": "Você sabe quanto gasta por mês?", "texto": "Não é chute. É saber *o valor de verdade* que sai da sua conta." },
+    { "tipo": "conteudo", "numero": "4", "titulo": "Você tem um objetivo?", "texto": "Casa, viagem, aposentadoria. Saber *para que e para quando* define onde investir." },
+    { "tipo": "conteudo", "numero": "5", "titulo": "Você aguenta ver o valor oscilar?", "texto": "Alguns investimentos sobem e descem no caminho. Saber disso evita *vender no pior momento*." },
+    { "tipo": "lista", "titulo": "Seu resultado", "itens": ["*4 ou 5 SIM:* você pode começar a investir", "*2 ou 3 SIM:* arrume a base primeiro, reserva e dívidas", "*0 ou 1 SIM:* comece pelo orçamento do mês"] },
+    { "tipo": "final", "titulo": "Quantos *SIM* você teve?", "texto": "Comenta aqui e segue pra aprender a dar o próximo passo." }
+  ],
+  "cover_index": 0,
+  "mode": "rascunho",
+  "auto_add_music": true
+}

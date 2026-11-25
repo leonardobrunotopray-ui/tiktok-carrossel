@@ -11,10 +11,10 @@ on:
         description: 'Só testar, sem publicar'
         type: boolean
         default: false
-  # Agendamento: segunda, quarta e sexta às 17:50 (Brasília) = 20:50 UTC.
+  # Agendamento: todo dia às 18:30 (Brasília) = 21:30 UTC, para publicar por volta das 19h.
   # Sai o próximo post pronto da fila. O GitHub pode atrasar alguns minutos.
   schedule:
-    - cron: '50 20 * * 1,3,5'
+    - cron: '30 21 * * *'
 
 permissions:
   contents: write

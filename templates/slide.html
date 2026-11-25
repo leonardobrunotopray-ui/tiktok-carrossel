@@ -38,11 +38,14 @@
 <script>
   // Recebe window.SLIDE = { slide, indice, total, marca, tema, aviso }
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  // "R$ 3.000" nunca quebra entre o R$ e o número nos textos (o valor grande do destaque pode quebrar)
+  function nb(s){return String(s==null?'':s).replace(/R\$ (?=\d)/g,'R$\u00a0')}
   // *texto* vira destaque na cor de acento
-  function fmt(s){return esc(s).replace(/\*(.+?)\*/g,'<b>$1</b>').replace(/\n/g,'<br>')}
-  function fmtTitle(s){return esc(s).replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>')}
+  function fmt(s){return esc(nb(s)).replace(/\*(.+?)\*/g,'<b>$1</b>').replace(/\n/g,'<br>')}
+  function fmtTitle(s){return esc(nb(s)).replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>')}
   function render(d){
     var s=d.slide, t=s.tipo||'conteudo', a=document.getElementById('area'), h='';
+    document.getElementById('aviso').textContent='';
     document.body.className=d.tema||'';
     document.getElementById('marca').textContent=d.marca||'';
     document.getElementById('pg').textContent=(d.indice+1)+'/'+d.total;

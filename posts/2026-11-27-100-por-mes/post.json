@@ -1,0 +1,19 @@
+{
+  "title": "Quanto vira R$ 100 por mês investidos?",
+  "description": "R$ 100 por mês parece pouco. O tempo faz o resto ✨ Manda pra alguém que diz que não sobra dinheiro e salva pra lembrar. Simulação com 10% ao ano, sem descontar impostos e inflação. #investimentos #juroscompostos #educacaofinanceira #financaspessoais #dinheiro",
+  "marca": "@grana.descomplicadaa",
+  "tema": "",
+  "aviso": "Simulação educativa: 10% ao ano, aportes mensais de R$ 100, sem descontar impostos e inflação. Rentabilidade passada não garante rentabilidade futura.",
+  "slides": [
+    { "tipo": "capa", "titulo": "Guardei *R$ 100* por mês. Olha quanto virou.", "subtitulo": "O poder dos juros compostos em números" },
+    { "tipo": "destaque", "titulo": "Em 1 ano", "valor": "R$ 1.254", "texto": "Você guardou R$ 1.200. Os juros ainda são *pequenos*. Calma." },
+    { "tipo": "destaque", "titulo": "Em 5 anos", "valor": "R$ 7.656", "texto": "Você guardou R$ 6.000. Os juros já pagaram *R$ 1.656* para você." },
+    { "tipo": "destaque", "titulo": "Em 10 anos", "valor": "R$ 19.986", "texto": "Você guardou R$ 12.000. *Quase R$ 8 mil* vieram dos juros." },
+    { "tipo": "destaque", "titulo": "Em 20 anos", "valor": "R$ 71.826", "texto": "Você guardou R$ 24.000. O total é *quase 3 vezes* o que você colocou." },
+    { "tipo": "conteudo", "titulo": "E debaixo do colchão?", "texto": "Os mesmos R$ 100 por mês viram só R$ 24.000 em 20 anos. E ainda *perdem valor* com a inflação." },
+    { "tipo": "final", "titulo": "O segredo é *começar*", "texto": "Manda pra alguém que diz que não sobra dinheiro e segue pra aprender onde investir." }
+  ],
+  "cover_index": 0,
+  "mode": "rascunho",
+  "auto_add_music": true
+}

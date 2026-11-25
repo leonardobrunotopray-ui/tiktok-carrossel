@@ -1,0 +1,19 @@
+{
+  "title": "Regra 50-30-20: seu orçamento em 5 minutos",
+  "description": "O jeito mais simples de organizar o salário. Salva e testa esse mês 📌 Comenta se o seu essencial cabe nos 50%. #orcamento #organizacaofinanceira #financaspessoais #educacaofinanceira #dinheiro",
+  "marca": "@grana.descomplicadaa",
+  "tema": "",
+  "aviso": "Conteúdo educativo. Não é recomendação financeira.",
+  "slides": [
+    { "tipo": "capa", "titulo": "Ganha R$ 3.000? *Divide assim.*", "subtitulo": "A regra 50-30-20 organiza seu salário em 5 minutos" },
+    { "tipo": "destaque", "titulo": "50% para o essencial", "valor": "R$ 1.500", "texto": "Aluguel, contas, mercado, transporte, saúde. O que você *não pode deixar de pagar*." },
+    { "tipo": "destaque", "titulo": "30% para os desejos", "valor": "R$ 900", "texto": "Lazer, roupas, delivery, streaming. Pode gastar *sem culpa*, dentro do limite." },
+    { "tipo": "destaque", "titulo": "20% para o futuro", "valor": "R$ 600", "texto": "Reserva de emergência, quitar dívidas, investir. *Pague-se primeiro*, assim que o salário cair." },
+    { "tipo": "conteudo", "titulo": "O essencial passou de 50%?", "texto": "Comece com *70-20-10* e vá ajustando. O importante é ter um plano e guardar alguma coisa todo mês." },
+    { "tipo": "lista", "titulo": "Como começar hoje", "itens": ["Anote seu salário líquido", "Calcule os 3 valores", "Separe os *20% do futuro* no dia do pagamento"] },
+    { "tipo": "final", "titulo": "Salva e *testa esse mês*", "texto": "Comenta se o seu essencial cabe nos 50% e segue pra mais dicas." }
+  ],
+  "cover_index": 0,
+  "mode": "rascunho",
+  "auto_add_music": true
+}
