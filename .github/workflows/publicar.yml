@@ -18,6 +18,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
   pages: write
   id-token: write
 
@@ -102,3 +103,7 @@ jobs:
           git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
           for f in posts tokens.enc conta.json; do if [ -e "$f" ]; then git add -A -- "$f"; fi; done
           git diff --cached --quiet || (git commit -m "Atualiza status da publicação" && git pull --rebase && git push)
+          # Commits do robô não disparam o site sozinhos: pede a atualização.
+          gh workflow run site.yml --ref main || true
+        env:
+          GH_TOKEN: ${{ github.token }}
