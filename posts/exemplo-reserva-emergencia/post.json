@@ -14,7 +14,7 @@
     { "tipo": "final", "titulo": "Salva pra não *esquecer*", "texto": "Segue o perfil pra mais dicas de finanças sem complicação." }
   ],
   "cover_index": 0,
-  "mode": "direct",
+  "mode": "rascunho",
   "privacy": "PUBLIC_TO_EVERYONE",
   "auto_add_music": true,
   "disable_comment": false,
