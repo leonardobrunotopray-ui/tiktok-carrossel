@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex">
+<title>Autorizar no TikTok</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><main>
+<h1>Autorizar no TikTok</h1>
+<div class="box" id="ok">
+  <p>Toque no botão, entre com a conta do seu canal e toque em <b>Autorizar</b>.</p>
+  <a id="ir" href="#"><button type="button">Abrir o TikTok para autorizar</button></a>
+  <p class="muted">Depois você cai na página "Autorização recebida". Copie o endereço dela e cole no workflow "Autorizar TikTok", no campo url_retorno.</p>
+</div>
+<div class="box" id="erro" hidden><p>Link incompleto. Rode o workflow "Autorizar TikTok" com o campo vazio e use o link do resumo.</p></div>
+</main>
+<script>
+var h=new URLSearchParams(location.hash.slice(1)), k=h.get('k');
+if(!k){document.getElementById('ok').hidden=true;document.getElementById('erro').hidden=false}
+else{
+  var key=atob(k.replace(/-/g,'+').replace(/_/g,'/'));
+  var base=location.href.split('#')[0].replace(/autorizar\.html.*$/,'');
+  var q=new URLSearchParams({client_key:key,scope:h.get('s')||'user.info.basic,video.publish,video.upload',response_type:'code',redirect_uri:base+'callback.html',state:'github-actions'});
+  document.getElementById('ir').href='https://www.tiktok.com/v2/auth/authorize/?'+q.toString();
+}
+</script>
+</body></html>
