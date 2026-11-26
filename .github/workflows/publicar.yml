@@ -11,12 +11,15 @@ on:
         description: 'Só testar, sem publicar'
         type: boolean
         default: false
-  # Agendamento: todo dia às 18:30 (Brasília) = 21:30 UTC, para publicar por volta das 19h.
-  # 19:15 (22:15 UTC) é reserva, caso o GitHub atrase ou pule o primeiro horário.
-  # Sai no máximo 1 post por dia: se o primeiro funcionar, a reserva não envia nada.
+  # Agendamento diário. O GitHub costuma atrasar de 30 a 90 minutos os horários agendados,
+  # então há várias tentativas entre 17:07 e 19:07 (Brasília), longe da hora cheia.
+  # Sai no máximo 1 post por dia: a primeira tentativa que rodar envia, as outras não fazem nada.
   schedule:
-    - cron: '30 21 * * *'
-    - cron: '15 22 * * *'
+    - cron: '7 20 * * *'
+    - cron: '37 20 * * *'
+    - cron: '7 21 * * *'
+    - cron: '37 21 * * *'
+    - cron: '7 22 * * *'
 
 permissions:
   contents: write
